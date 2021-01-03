@@ -39,8 +39,13 @@ const tasks = [
 
   // UI Elements
   const listContainer = document.querySelector(".tasks-list-section .list-group");
+  
+  const form = document.forms["addTask"];
+  const inputTitle = form.elements['title'];
+  const inputBody = form.elements['body'];
 
   renderAllTasks(objOfTasks);
+  form.addEventListener("submit", FormSubmitHandler);
 
   function renderAllTasks(tasksList) {
     if (!tasksList) {
@@ -77,5 +82,35 @@ const tasks = [
     li.append(span, article, deleteBtn);
 
     return li;
+  }
+
+  function FormSubmitHandler(e) {
+    e.preventDefault();
+    const titleValue = inputTitle.value;
+    const bodyValue = inputBody.value;
+
+    if (!titleValue || !bodyValue) {
+      alert("Please, enter title and body of the task");
+      return;
+    }
+
+    const task = createNewTask(titleValue, bodyValue);
+    const listItem = listItemTemplate(task);
+    listContainer.insertAdjacentElement("afterbegin", listItem);
+
+    form.reset();
+  }
+
+  function createNewTask(title, body) {
+    const newTask = {
+      _id: `task-${Math.random()}`,
+      completed: false,
+      body,
+      title
+    };
+
+    objOfTasks[newTask._id] = newTask;
+
+    return { ...newTask };
   }
 })(tasks);
