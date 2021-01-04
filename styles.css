@@ -71,3 +71,7 @@ body {
   border-color: var(--input-focus-border-color);
   box-shadow: var(--input-focus-box-shadow);
 }
+
+button {
+  width: 120px;
+}
